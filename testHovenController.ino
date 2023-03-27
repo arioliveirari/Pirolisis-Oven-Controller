@@ -23,12 +23,12 @@ void loop() {
   }
 
   // check if starter is ON and if temperature is below 50 
-  if (ktc.readCelsius() < 50 && status == 1 ){
+  if (temp < 50 && status == 1 ){
     digitalWrite(7,LOW);// turn relay OFF
   }
   //print temperature in Celsius
   Serial.print(status);
   Serial.print(" Deg C = "); 
-  Serial.println(ktc.readCelsius());
+  Serial.println(temp);
   delay(1000);
 }
