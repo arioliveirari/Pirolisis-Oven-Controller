@@ -5,7 +5,7 @@
 int ktcSO = 8;
 int ktcCS = 9;
 int ktcCLK = 10;
-int starter  = A0;
+int status = 0;
 
 MAX6675 ktc(ktcCLK, ktcCS, ktcSO); //library to control the temp reader
 
@@ -17,16 +17,18 @@ void setup() {
 }
 
 void loop() {
-
-  int analogValue = analogRead(starter);    //read analog value of A0 pin
-  float voltage = analogValue * (5.0 / 1023.0); //convert A0 reading to voltage
+  float temp = ktc.readCelsius();
+  if (temp > 60) {
+    status = 1;
+  }
 
   // check if starter is ON and if temperature is below 50 
-  if (ktc.readCelsius() < 50 && voltage > 3.2 ){
+  if (ktc.readCelsius() < 50 && status == 1 ){
     digitalWrite(7,LOW);// turn relay OFF
   }
   //print temperature in Celsius
-  Serial.print("Deg C = "); 
+  Serial.print(status);
+  Serial.print(" Deg C = "); 
   Serial.println(ktc.readCelsius());
-  delay(2000);
+  delay(1000);
 }
